@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- langsung /style.css karena folder public sudah di set sebagai static files di express -->
+		<link rel="stylesheet" href="/style.css" />
+	</head>
+	<body>
+		<header><%- include('./partials/header', {username})%></header>
+		<div class="content-area">
+			<div class="hero">
+				<div class="animated-title">
+					<div class="text-top">
+						<div>
+							<span>
+								<h2 class="app-description">NodeJS</h2>
+							</span>
+							<span
+								><h2 class="app-description">Simple To-Do List App</h2>
+							</span>
+						</div>
+					</div>
+					<div class="text-bottom">
+						<div>
+							<span
+								><h1>
+									Built Using NodeJS And Embedded JavaScript With MongoDB as
+									Database And Mongoose As Its Driver
+								</h1></span
+							>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		function startAnimation() {}
+	</script>
+</html>
