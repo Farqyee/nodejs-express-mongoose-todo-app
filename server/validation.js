@@ -115,8 +115,10 @@ const isUsernameOrEmail = oneOf(
 // validation error handling
 function validateHandling(req, res, next) {
 	const resultValidation = validationResult(req);
-	if (!resultValidation.isEmpty())
+	if (!resultValidation.isEmpty()) {
+		console.log(resultValidation);
 		return res.status(400).json(resultValidation);
+	}
 	next();
 }
 module.exports = {

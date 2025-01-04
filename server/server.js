@@ -41,6 +41,7 @@ app.post(
 	validationModule.validateLogin,
 	validationModule.isUsernameOrEmail,
 	validationModule.validateHandling,
+	routeHandling.loginLimiter,
 	routeHandling.routeLogin
 );
 

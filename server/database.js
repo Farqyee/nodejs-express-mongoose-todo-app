@@ -18,7 +18,7 @@ async function checkUsername(username) {
 	try {
 		const result = await User.find({ username });
 		if (result.length > 0) {
-			return result;
+			return true;
 		}
 		return false;
 	} catch (error) {
@@ -30,7 +30,7 @@ async function checkEmail(email) {
 	try {
 		const result = await User.find({ email });
 		if (result.length > 0) {
-			return result;
+			return true;
 		}
 		return false;
 	} catch (error) {
@@ -41,14 +41,17 @@ async function checkEmail(email) {
 //login
 async function loginDb(loginData) {
 	try {
-		const user = User.findOne(loginData);
-		if (!user) {
-			return "Wrong Username/Email and Password";
+		const user = User.findOne(
+			{ username: loginData.username } || { email: loginData.email }
+		);
+		if (!user.length > 0) {
+			console.log("here");
+			throw new Error("Wrong Username/Email");
 		}
 		return user;
 	} catch (error) {
 		console.error("error in DB login", error);
-		return error;
+		return false;
 	}
 }
 

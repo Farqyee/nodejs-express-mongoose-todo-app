@@ -8,6 +8,15 @@ const {
 } = require("../database");
 const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
+const limiter = require("express-rate-limit");
+
+const loginLimiter = limiter({
+	max: 5,
+	windowMs: 1 * 60 * 1000,
+	message: "Too much attempt, try again later",
+	standardHeaders: true,
+	legacyHeaders: false,
+});
 
 const routeUpdateTodo = async (req, res) => {
 	try {
@@ -59,12 +68,15 @@ const routeLogin = async (req, res) => {
 		console.log(`setelah kondisi : ${JSON.stringify(req.body)}`);
 
 		const isAuth = await loginDb(req.body);
-		if (!isAuth) {
-			return res.status(400).json({ message: "Bad Request" });
+		if (!isAuth || !bcrypt.compare(req.body.password, isAuth.password)) {
+			return res
+				.status(400)
+				.json({ message: "Wrong Username/Email or Password" });
 		}
 
 		res.status(200).json(req.body);
 	} catch (error) {
+		console.log(error);
 		res.status(500).json(error);
 	}
 };
@@ -87,4 +99,5 @@ module.exports = {
 	routeGetTodos,
 	routeRegister,
 	routeLogin,
+	loginLimiter,
 };
