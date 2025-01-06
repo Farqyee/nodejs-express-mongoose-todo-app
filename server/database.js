@@ -45,7 +45,6 @@ async function loginDb(loginData) {
 			{ username: loginData.username } || { email: loginData.email }
 		);
 		if (!user.length > 0) {
-			console.log("here");
 			throw new Error("Wrong Username/Email");
 		}
 		return user;

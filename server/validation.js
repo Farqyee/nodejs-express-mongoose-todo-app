@@ -25,11 +25,11 @@ const dueDateVariable = () => {
 //Validation schema
 const validateRegisterSchema = checkSchema({
 	username: {
+		escape: true,
 		notEmpty: {
 			errorMessage: "Username is required",
 			bail: true,
 		},
-		escape: true,
 		trim: true,
 		isString: true,
 		custom: {
@@ -37,11 +37,11 @@ const validateRegisterSchema = checkSchema({
 		},
 	},
 	email: {
+		escape: true,
 		notEmpty: {
 			errorMessage: "Email is required",
 			bail: true,
 		},
-		escape: true,
 		trim: true,
 		isEmail: { errorMessage: "Masukkan email yang valid" },
 		custom: {
@@ -49,6 +49,7 @@ const validateRegisterSchema = checkSchema({
 		},
 	},
 	password: {
+		escape: true,
 		notEmpty: {
 			errorMessage: "Password required",
 		},
@@ -65,11 +66,13 @@ const validateLogin = checkSchema({
 		notEmpty: { errorMessage: "Username or Email is required" },
 		isString: true,
 		trim: true,
+		escape: true,
 	},
 	password: {
 		notEmpty: true,
 		trim: true,
 		isString: true,
+		escape: true,
 	},
 });
 
