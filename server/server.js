@@ -1,12 +1,37 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const app = express();
+const sanitize = require("mongo-sanitize");
+const helmet = require("helmet");
 dotenv.config();
 
 //import modules
 const { connectDB } = require("./database");
 const routeHandling = require("./route/route");
 const validationModule = require("./validation");
+const { verifyToken } = require("./authentication/auth");
+
+//Helmet JS
+app.use(
+	//HTTP Strict-Transport-Security
+	helmet.hsts({
+		maxAge: 31536000,
+		includeSubDomains: true,
+		preload: true,
+	}), //paksa browser untuk menggunakan https
+	helmet.frameguard({
+		action: "sameorigin",
+	})
+);
+
+//set headers for permission policy
+app.use((req, res, next) => {
+	res.setHeader(
+		"Permission-Policy",
+		"geolocation=(), microphone=(), camera=()" // Blokir fitur tertentu
+	);
+	next();
+});
 
 //set view engine ke embedded javaScript
 app.set("view engine", "ejs");
@@ -16,6 +41,14 @@ app.use(express.json());
 
 // Middleware untuk file static
 app.use(express.static("./public"));
+
+//Sanitize to handle Sql Injection
+app.use((req, res, next) => {
+	req.body = sanitize(req.body);
+	req.query = sanitize(req.query);
+	req.params = sanitize(req.params);
+	next();
+});
 
 // Route Utama
 app.get("/", (req, res) => {
@@ -40,6 +73,7 @@ app.post(
 	"/register",
 	validationModule.validateRegisterSchema,
 	validationModule.validateHandling,
+	routeHandling.requestLimiter,
 	routeHandling.routeRegister
 );
 
@@ -49,7 +83,7 @@ app.post(
 	validationModule.validateLogin,
 	validationModule.isUsernameOrEmail,
 	validationModule.validateHandling,
-	routeHandling.loginLimiter,
+	routeHandling.requestLimiter,
 	routeHandling.routeLogin
 );
 
@@ -61,7 +95,7 @@ app
 		validationModule.validateHandling,
 		routeHandling.routeInsertTodo
 	)
-	.get(routeHandling.routeGetTodos)
+	.get(verifyToken, routeHandling.routeGetTodos)
 	.put(
 		validationModule.validateTodo,
 		validationModule.validateHandling,

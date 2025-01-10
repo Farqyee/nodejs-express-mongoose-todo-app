@@ -1,4 +1,3 @@
-const { selectFields } = require("express-validator/lib/field-selection");
 const mongoose = require("mongoose");
 
 //create Schema
