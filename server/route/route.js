@@ -10,6 +10,7 @@ const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 const limiter = require("express-rate-limit");
 const { createToken } = require("../authentication/auth");
+const { errorLogger } = require("../helper");
 
 const requestLimiter = limiter({
 	max: 5,
@@ -28,7 +29,7 @@ const routeUpdateTodo = async (req, res) => {
 		);
 		res.status(200).json(result);
 	} catch (error) {
-		res.status(500).json(error);
+		errorLogger(req, res, error);
 	}
 };
 const routeInsertTodo = async (req, res) => {
@@ -36,7 +37,7 @@ const routeInsertTodo = async (req, res) => {
 		await insertTodo(req.body);
 		res.status(200).json(req.body);
 	} catch (error) {
-		return console.log(error);
+		errorLogger(req, res, error);
 	}
 };
 const routeGetTodos = async (req, res) => {
@@ -45,7 +46,7 @@ const routeGetTodos = async (req, res) => {
 		res.status(200).json(result);
 		console.log(JSON.stringify(result));
 	} catch (error) {
-		res.status(500).json(error);
+		errorLogger(req, res, error);
 	}
 };
 const routeDeleteTodo = async (req, res) => {
@@ -53,7 +54,7 @@ const routeDeleteTodo = async (req, res) => {
 		const result = await deleteTodo(req.body);
 		res.status(200).json(result);
 	} catch (error) {
-		res.status(500).json(error);
+		errorLogger(req, res, error);
 	}
 };
 
@@ -77,11 +78,11 @@ const routeLogin = async (req, res) => {
 				.status(400)
 				.json({ message: "Wrong Username/Email or Password" });
 		}
-		const user = await createToken(isAuth);
+		const userPayload = { email: isAuth.email, username: isAuth.username };
+		const user = await createToken(userPayload);
 		res.status(200).json({ body: req.body, message: user });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json(error);
+		errorLogger(req, res, error);
 	}
 };
 
@@ -92,7 +93,7 @@ const routeRegister = async (req, res) => {
 		const result = await user.save();
 		res.status(200).json(result);
 	} catch (error) {
-		res.status(500).json(error);
+		errorLogger(req, res, error);
 	}
 };
 

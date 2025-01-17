@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const app = express();
 const sanitize = require("mongo-sanitize");
 const helmet = require("helmet");
+const winston = require("winston");
+const { v1: uuidv1 } = require("uuid");
 dotenv.config();
 
 //import modules
@@ -10,7 +12,33 @@ const { connectDB } = require("./database");
 const routeHandling = require("./route/route");
 const validationModule = require("./validation");
 const { verifyToken } = require("./authentication/auth");
+const { errorLogger } = require("./helper");
 
+//Create Logger
+const logger = winston.createLogger({
+	level: "info",
+	transports: [
+		new winston.transports.File({ filename: "error.log", level: "error" }),
+	],
+});
+//generate request ID
+app.use((req, res, next) => {
+	const options = {
+		clockseq: 0x1234,
+		msecs: new Date().getTime(),
+	};
+	req.requestId = uuidv1(options);
+	next();
+});
+
+//request log
+// app.use((req, res, next) => {
+// 	logger.info(`Request Received with ID = ${req.requestId}`, {
+// 		method: req.method,
+// 		url: req.originalUrl,
+// 	});
+// 	next();
+// });
 //Helmet JS
 app.use(
 	//HTTP Strict-Transport-Security
@@ -50,6 +78,14 @@ app.use((req, res, next) => {
 	next();
 });
 
+//Handling syntax JSON Error
+app.use((err, req, res, next) => {
+	if (err instanceof SyntaxError && err.status == 400 && "body" in err) {
+		return res.status(400).json({ error: "Invalid JSON Format" });
+	}
+	next();
+});
+
 // Route Utama
 app.get("/", (req, res) => {
 	res.render("auth", { username: "tes doang" });
@@ -60,12 +96,13 @@ app.get("/", (req, res) => {
 	// );
 });
 
-//Handling syntax JSON Error
-app.use((err, req, res, next) => {
-	if (err instanceof SyntaxError && err.status == 400 && "body" in err) {
-		return res.status(400).json({ error: "Invalid JSON Format" });
+//test error Log
+app.get("/testlog", (req, res) => {
+	try {
+		throw new Error("Test ERROR");
+	} catch (error) {
+		return errorLogger(req, res, error);
 	}
-	next();
 });
 
 //register
@@ -89,7 +126,7 @@ app.post(
 
 //todo
 app
-	.route("/todo")
+	.route("/todo", verifyToken)
 	.post(
 		validationModule.validateTodo,
 		validationModule.validateHandling,
