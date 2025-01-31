@@ -1,0 +1,437 @@
+:root {
+	--gradient: linear-gradient(
+		180deg,
+		#242424,
+		rgba(255, 255, 255, 0.02) 65.62%
+	);
+	--gradient2: linear-gradient(180deg, #05559f, rgba(135, 2, 168, 0.02) 95.62%);
+	--maincolor: #05559f;
+}
+.content-area {
+	display: flex !important;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	justify-items: center;
+}
+.content-container {
+	display: flex;
+	width: 60vw;
+	justify-content: space-between;
+	justify-items: center;
+	align-items: center;
+	align-content: center;
+	height: 70vh;
+}
+.modal {
+	display: flex;
+	justify-content: center;
+	justify-items: center;
+	align-items: center;
+	align-content: center;
+	background: transparent;
+	color: white;
+	width: 45%;
+	height: 100%;
+	margin: 20px;
+	border-radius: 10px;
+	border: 1px solid #575757;
+}
+.inactive {
+	background: var(--gradient) !important;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+.active {
+	position: relative;
+	z-index: 0;
+	margin: 20px;
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 2rem;
+
+	&::before {
+		content: "";
+		position: absolute;
+		z-index: -2;
+		left: -50%;
+		top: -50%;
+		width: 200%;
+		height: 200%;
+		background-color: #1a232a;
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		background-image: conic-gradient(
+			transparent,
+			rgb(72, 172, 240),
+			/* rgba(168, 239, 255, 1), */ transparent 30%
+		);
+		animation: rotate 4s linear infinite;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		left: 6px;
+		top: 6px;
+		width: calc(100% - 12px);
+		height: calc(100% - 12px);
+		background: #000;
+		border-radius: 5px;
+	}
+}
+.modal-content {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	justify-content: center;
+	justify-items: center;
+	text-align: center;
+}
+
+.categoryWrapper {
+	height: inherit;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.categoryWrapper:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 10px;
+	background: var(--gradient2);
+	content: "";
+	opacity: 0;
+	-webkit-transition: opacity 0.9s ease 0s;
+}
+
+.categoryWrapper:hover:after {
+	opacity: 0.8;
+	box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.categoryWrapper h1 {
+	color: white;
+	font-size: 32px;
+	letter-spacing: 2px;
+	margin-bottom: 20%;
+	-webkit-transition: all 0.15s ease 0s;
+	position: relative;
+	z-index: 10;
+}
+
+.categoryWrapper:hover h1 {
+	transform: translateY(-10px);
+}
+
+.categoryWrapper button {
+	position: absolute;
+	transform: translatey(60px);
+	-webkit-appearance: none;
+	border: none;
+	background: none;
+	color: white;
+	width: 250px;
+	height: 50px;
+	font-size: 20px;
+	padding: 0;
+	margin: 0;
+	outline: none;
+	z-index: 10;
+}
+
+.categoryWrapper button span {
+	display: block;
+	position: relative;
+	line-height: 50px;
+	height: 50px;
+	cursor: pointer;
+}
+
+.categoryWrapper button > span:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 20px;
+	height: 0;
+
+	border: 1px solid white;
+	border-left: none;
+	border-bottom: none;
+
+	transition: height 0.15s ease-out, width 0.15s ease-out 0.15s;
+}
+
+.categoryWrapper:hover button > span:after {
+	width: calc(50% - 1px);
+	height: calc(100% - 2px);
+	transition: width 0.15s ease-out, height 0.15s ease-out 0.15s;
+}
+
+.categoryWrapper button > span:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	right: 50%;
+	width: 20px;
+	height: 0;
+
+	border: 1px solid white;
+	border-right: none;
+	border-bottom: none;
+
+	transition: height 0.15s ease-out, width 0.15s ease-out 0.15s;
+}
+
+.categoryWrapper:hover button > span:before {
+	width: calc(50% - 1px);
+	height: calc(100% - 2px);
+	transition: width 0.15s ease-out, height 0.15s ease-out 0.15s;
+}
+
+.categoryWrapper button > span > span:before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0%;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.categoryWrapper:hover button > span > span:before {
+	opacity: 1;
+	border-bottom: 1px solid white;
+	width: calc(50%);
+	height: 1px;
+	transition: opacity 0s ease-out 0.29s, width 0.15s ease-out 0.3s;
+}
+
+.categoryWrapper button > span > span:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0%;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+}
+
+.categoryWrapper:hover button > span > span:after {
+	opacity: 1;
+	border-bottom: 1px solid white;
+	width: calc(50%);
+	height: 1px;
+	transition: opacity 0s ease-out 0.29s, width 0.15s ease-out 0.3s;
+}
+
+.categoryWrapper button > span > span > span {
+	transition: color 0.15s ease-out 0.3s;
+	color: transparent;
+}
+
+.categoryWrapper:hover button > span > span > span {
+	color: white;
+}
+
+.categoryWrapper button > span > span > span:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	color: #1f2e4d;
+	content: attr(data-attr-span);
+	width: 0%;
+	height: 100%;
+	background: white;
+	white-space: nowrap;
+	text-align: center;
+	margin: auto;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	transition: width 0.2s;
+}
+
+.categoryWrapper button:hover > span > span > span:after {
+	width: 100%;
+}
+.switch-hidden {
+	display: none;
+}
+.form-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.form-box h2 {
+	font-size: 2em;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+.form-box input,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+	width: 100%;
+	margin: 10px 0;
+	padding: 10px;
+	background: transparent;
+	-webkit-text-fill-color: #fff;
+	-webkit-box-shadow: 0 0 0px 1000px #000000 inset;
+	color: #fff;
+	border: none;
+	outline: none;
+	border-bottom: 1px solid #575757;
+}
+.form-box label {
+	position: absolute;
+	top: 40%;
+	left: 5%;
+	transition: none;
+}
+.form-box input:focus + label,
+.form-box input:valid + label {
+	color: #d1d1d1;
+	top: -10%;
+	font-size: 0.7em;
+	transition: ease 0.4s;
+}
+.form-group {
+	position: relative;
+}
+.submit {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.btn-submit {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	position: relative;
+	font-size: 1em;
+	margin: 10%;
+	height: 40px;
+	width: 80%;
+	background: transparent;
+	border: 1px solid #575757;
+	color: #fff;
+	transition: ease 0.5s;
+}
+.btn-submit:hover {
+	background: var(--maincolor);
+}
+i {
+	position: absolute;
+	color: transparent;
+	transition: 200ms;
+}
+.form-box button:focus {
+	color: transparent;
+	outline: none;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	padding: 25px 25px;
+	border-left: 2px solid #00c2cb;
+	animation: spin 2s 500ms forwards;
+}
+.form-box button:focus i {
+	animation: check 300ms 2250ms forwards;
+}
+
+@keyframes spin {
+	80% {
+		border: 2px solid transparent;
+		border-left: 2px solid #00c2cb;
+	}
+	100% {
+		transform: rotate(720deg);
+		border: 2px solid #00c2cb;
+	}
+}
+
+@keyframes check {
+	to {
+		color: #00c2cb;
+	}
+}
+.lupa-password a {
+	font-size: 0.8em;
+	position: relative;
+	width: 60%;
+	color: white;
+	text-decoration: none;
+}
+.lupa-password {
+	margin: 10px 0;
+	display: flex;
+	justify-content: end;
+	justify-items: end;
+}
+.lupa-password a::after {
+	content: "";
+	display: flex;
+	justify-self: center;
+	width: 80%;
+	height: 0.1em;
+	background-color: rgb(255, 255, 255);
+	opacity: 1;
+	transform: scale(0);
+	transform-origin: center;
+	transition: opacity 300ms, transform 300ms;
+}
+
+.lupa-password a:hover::after,
+.lupa-password a:focus::after {
+	transform: scale(1);
+}
+/* .hidden {
+	visibility: hidden;
+	height: 0;
+	width: 0;
+} */
+/* Aturan untuk elemen yang tersembunyi */
+.hidden {
+	opacity: 0;
+	transform: scale(0);
+	pointer-events: none;
+	max-height: 0; /* Menghilangkan dimensi tinggi elemen */
+	max-width: 0;
+	transition: opacity 0.1s ease, transform 0.1s ease, max-height 0.1s ease;
+}
+.show {
+	opacity: 1;
+	transform: scale(1);
+	max-height: 500px; /* Menghilangkan dimensi tinggi elemen */
+	max-width: 500px;
+	transition: opacity 0.9s ease, transform 0.9s ease, max-height 0.9s ease;
+	transition-delay: 0.3s;
+}
+
+/* #FIXME : How To disable animation for different phase of transformation*/

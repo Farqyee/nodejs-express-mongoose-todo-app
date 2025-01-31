@@ -1,11 +1,11 @@
 <!-- tes komen -->
 <div class="nav-div">
-	<h1 class="brand">To-do App</h1>
+	<h1 class="brand"><% try{%><%=username%><%}catch(e){ %>To-Do App<%}%></h1>
 	<nav class="navbar">
 		<ul class="navbar-menus">
-			<li><a href="#">Home</a></li>
+			<li><a href="/">Home</a></li>
 			<li><a href="#">Todo</a></li>
-			<li><a href="#">Auth</a></li>
+			<li><a href="/auth">Auth</a></li>
 		</ul>
 	</nav>
 	<a href="" class="github-button"><h1 class="brand">Github</h1></a>

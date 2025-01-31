@@ -1,5 +1,4 @@
 const {
-	check,
 	oneOf,
 	body,
 	validationResult,
@@ -73,6 +72,10 @@ const validateLogin = checkSchema({
 		trim: true,
 		isString: true,
 		escape: true,
+		isLength: {
+			options: { min: 8 },
+			errorMessage: "Password minimal 8 karakter",
+		},
 	},
 });
 

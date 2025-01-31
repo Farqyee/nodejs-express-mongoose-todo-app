@@ -68,15 +68,17 @@ const routeLogin = async (req, res) => {
 			userQuery.email = req.body.email;
 			delete userQuery.username;
 		}
-		const encrypted = await bcrypt.hash(req.body.password, 10);
-		req.body.password = encrypted;
 		console.log(`setelah kondisi : ${JSON.stringify(req.body)}`);
 
 		const isAuth = await loginDb(userQuery);
-		if (!isAuth || !bcrypt.compare(req.body.password, isAuth.password)) {
-			return res
-				.status(400)
-				.json({ message: "Wrong Username/Email or Password" });
+		if (!isAuth) {
+			return res.status(400).json({ message: "Wrong Username or Email" });
+		}
+		if (!(await bcrypt.compare(req.body.password, isAuth.password))) {
+			console.log(await bcrypt.compare(req.body.password, isAuth.password));
+			return res.status(400).json({
+				message: "Wrong Password",
+			});
 		}
 		const userPayload = { email: isAuth.email, username: isAuth.username };
 		const user = await createToken(userPayload);

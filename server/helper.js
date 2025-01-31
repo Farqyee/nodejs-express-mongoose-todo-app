@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 const winston = require("winston");
 
 const logger = winston.createLogger({

@@ -88,7 +88,7 @@ app.use((err, req, res, next) => {
 
 // Route Utama
 app.get("/", (req, res) => {
-	res.render("auth", { username: "tes doang" });
+	res.render("index", { username: "tes doang" });
 
 	//untuk mengirimkan file
 	// res.sendFile(
@@ -114,6 +114,10 @@ app.post(
 	routeHandling.routeRegister
 );
 
+app.get("/auth", (req, res) => {
+	res.render("auth");
+});
+
 //login
 app.post(
 	"/login",
@@ -132,7 +136,7 @@ app
 		validationModule.validateHandling,
 		routeHandling.routeInsertTodo
 	)
-	.get(verifyToken, routeHandling.routeGetTodos)
+	.get(routeHandling.routeGetTodos)
 	.put(
 		validationModule.validateTodo,
 		validationModule.validateHandling,

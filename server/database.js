@@ -42,7 +42,6 @@ async function checkEmail(email) {
 async function loginDb(loginData) {
 	try {
 		const user = await User.findOne(loginData);
-		console.log(user);
 		if (user.length < 1) {
 			throw new Error("Wrong Username/Email");
 		}
